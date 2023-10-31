@@ -1,20 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    private $course = null;
+    public function __construct()
+    {
+        $this->course = new Course();
+    }
     public function index()
     {
         $courses = DB::table('courses')->get();
         return view('courses.index', compact('courses'));
     }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -22,7 +24,6 @@ class CourseController extends Controller
     {
         return view("courses.create");
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -37,7 +38,6 @@ class CourseController extends Controller
         DB::table('courses')->insert($data);
         return redirect()->action([CourseController::class, 'index']);
     }
-
     /**
      * Display the specified resource.
      */
@@ -46,7 +46,6 @@ class CourseController extends Controller
         $course = DB::table('courses')->where('id', $id)->first();
         return view('courses.show', compact('course'));
     }
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -58,7 +57,6 @@ class CourseController extends Controller
         }
         return view('courses.edit', compact('course'));
     }
-
     /**
      * Update the specified resource in storage.
      */
@@ -73,8 +71,6 @@ class CourseController extends Controller
         DB::table('courses')->where('id', $id)->update($data);
         return redirect()->action([CourseController::class,'index']);
     }
-
-
     /**
      * Remove the specified resource from storage.
      */

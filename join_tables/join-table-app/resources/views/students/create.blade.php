@@ -13,7 +13,11 @@
       <label for="student_phone">Student Phone</label><br />
       <input type="text" name="student_phone" id="student_phone" class="form-control"><br />
       <label for="course_id">Course ID</label><br />
-      <input type="text" name="course_id" id="course_id" class="form-control"><br />
+      <select name="dropdown">
+        @foreach($data as $item)
+            <option value="{{ $item->id }}">{{ $item->course_name }}</option>
+        @endforeach
+    </select>
       <input type="submit" value="Save" class="btn btn-success"><br />
     </form>
   </div>

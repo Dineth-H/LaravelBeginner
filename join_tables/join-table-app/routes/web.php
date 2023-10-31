@@ -21,7 +21,5 @@ Route::get('/', function () {
 });
 
 Route::resource('/student', StudentController::class);
-Route::patch('/student/{id}', [StudentController::class, 'update'])->name('students.update');
 
 Route::resource('/course', CourseController::class);
-Route::get('/course/edit/{id}', [CourseController::class, 'edit'])->name('course.edit');

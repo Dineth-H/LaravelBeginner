@@ -2,35 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Student;
-use App\Models\Course;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    private $student = null;
+    private $course = null;
+    public function __construct()
     {
-        $students = DB::table('students')
-        ->leftJoin('courses', 'students.course_id', '=', 'courses.id')
-        ->select('students.id', 'students.student_name', 'students.student_email', 'students.student_phone', 'courses.course_name', 'courses.course_code', 'courses.course_duration')
-        ->get();
-
-        return view('students.index', compact('students'));
+        $this->student = new Student();
+        $this->course = new Course();
     }
 
+    public function index()
+    {
+        $data = $this->student->course();
+        return view('students.index', compact('data'));
+    }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        return view('students.create');
+    { $data = $this->course->get_all_course_data();
+    
+        return view('students.create', ['data' => $data]);
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -58,16 +58,19 @@ class StudentController extends Controller
         DB::table('students')->insert($data);
         return redirect()->action([StudentController::class, 'index']);
     }
-
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        $student = Student::with('course')->find($id);
+        $student = DB::table('students')
+        ->where('students.id', $id) // Specify the table name for 'id'
+            ->join('courses', 'courses.id', '=', 'students.course_id')
+            ->select('students.*', 'courses.*')
+            ->first();
 
         if (!$student) {
-            return redirect()->action([StudentController::class,'create']);
+            return redirect()->action([StudentController::class, 'create']);
         }
 
         return view('students.show', compact('student'));
@@ -81,7 +84,6 @@ class StudentController extends Controller
         $student = DB::table('students')->where('id', $id)->first();
         return view('students.edit', compact('student'));
     }
-
     /**
      * Update the specified resource in storage.
      */
@@ -111,7 +113,6 @@ class StudentController extends Controller
         DB::table('students')->where('id', $id)->update($data);
         return redirect()->action([StudentController::class, 'index'])->with('flash_message', 'Student Updated!');
     }
-
     /**
      * Remove the specified resource from storage.
      */

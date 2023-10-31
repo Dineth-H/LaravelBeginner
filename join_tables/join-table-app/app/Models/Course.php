@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
-class Course extends Model
+class Course 
 {
     protected $fillable = [
         'course_name',
@@ -14,6 +14,16 @@ class Course extends Model
 
     public function students()
     {
-        return $this->hasMany(Student::class, 'course_id', 'id');
+        return DB::table('courses')
+            ->join('students', 'courses.id', '=', 'students.course_id')
+            ->select('students.*')
+            ->get();
+    }
+    
+    public function get_all_course_data()
+    {
+        return DB::table('courses')
+            ->select('courses.*')
+            ->get();
     }
 }
