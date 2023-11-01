@@ -7,17 +7,17 @@
     <form action="{{ url('student') }}" method="post">
       @csrf
       <label for="student_name">Student Name</label><br />
-      <input type="text" name="student_name" id="student_name" class="form-control"><br />
+      <input type="text" name="student_name" id="student_name" class="form-control" required><br />
       <label for="student_email">Student Email</label><br />
-      <input type="text" name="student_email" id="student_email" class="form-control"><br />
+      <input type="text" name="student_email" id="student_email" class="form-control" required><br />
       <label for="student_phone">Student Phone</label><br />
-      <input type="text" name="student_phone" id="student_phone" class="form-control"><br />
+      <input type="text" name="student_phone" id="student_phone" class="form-control" required><br />
       <label for="course_id">Course ID</label><br />
-      <select name="dropdown">
+      <select name="course_id" required>
         @foreach($data as $item)
             <option value="{{ $item->id }}">{{ $item->course_name }}</option>
         @endforeach
-    </select>
+      </select>
       <input type="submit" value="Save" class="btn btn-success"><br />
     </form>
   </div>

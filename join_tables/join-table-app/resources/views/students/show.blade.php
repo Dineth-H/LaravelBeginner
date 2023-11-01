@@ -7,7 +7,7 @@
     <h5 class="card-title">Student Name: {{ $student->student_name }}</h5>
     <p class="card-text">Student Email: {{ $student->student_email }}</p>
     <p class="card-text">Student Phone: {{ $student->student_phone }}</p>
-    @if($student->course)
+    @if(isset($student->course))
         <p class="card-text">Course Name: {{ $student->course->course_name }}</p>
         <p class="card-text">Course Code: {{ $student->course->course_code }}</p>
         <p class="card-text">Course Duration: {{ $student->course->course_duration }}</p>
@@ -15,7 +15,11 @@
         <p class="card-text">No Course Assigned</p>
     @endif
     <a href="{{ url('/student') }}" class="btn btn-primary">Back</a>
-    <a href="{{ url('/student/' . 'edit/' . $student->id ) }}" class="btn btn-primary">Edit</a>
+    <a href="{{ url('/student/' . $student->id . '/edit') }}" title="Edit Student">
+      <button class="btn btn-primary btn-sm">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+      </button>
+    </a>     
     <form method="POST" action="{{ url('/student' . '/' . $student->id) }}" accept-charset="UTF-8" style="display:inline">
         {{ method_field('DELETE') }}
         {{ csrf_field() }}

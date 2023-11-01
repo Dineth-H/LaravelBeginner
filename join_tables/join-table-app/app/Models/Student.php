@@ -15,9 +15,9 @@ class Student
 
     public function course()
     {
-        return DB::table('students')
-            ->join('courses', 'courses.id', '=', 'students.course_id')
-            ->select('courses.id as course_id', 'courses.course_name', 'courses.course_code', 'courses.course_duration', 'students.student_name', 'students.student_email', 'students.student_phone', 'students.id as student_id')
+        return DB::table('courses')
+            ->join('students', 'courses.id', '=', 'students.course_id')
+            ->select('students.*', 'courses.course_name', 'courses.course_code', 'courses.course_duration')
             ->get();
     }
 }

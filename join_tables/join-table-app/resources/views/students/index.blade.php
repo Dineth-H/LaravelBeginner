@@ -36,13 +36,24 @@
                                     <td>{{ $item->course_code }}</td>
                                     <td>{{ $item->course_duration }}</td>
                                     <td>
-                                        <a href="{{ url('/student/' . $item->student_id) }}" title="View Student"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a> {{-- Changed to $item->student_id --}}
-                                        <a href="{{ url('/student/edit/' . $item->student_id) }}" title="Edit Student"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a> {{-- Changed to $item->student_id --}}
+                                        <a href="{{ url('/student/' . $item->id) }}" title="View Student">
+                                            <button class="btn btn-info btn-sm">
+                                                <i class="fa fa-eye" aria-hidden="true"></i> View
+                                            </button>
+                                        </a> 
 
-                                        <form method="POST" action="{{ url('/student/' . $item->student_id) }}" accept-charset="UTF-8" style="display:inline"> {{-- Changed to $item->student_id --}}
-                                            {{ method_field('DELETE') }}
+                                        <a href="{{ url('/student/' . $item->id . '/edit') }}" title="Edit Student">
+                                            <button class="btn btn-primary btn-sm">
+                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                            </button>
+                                        </a> 
+                                        
+                                        <form method="POST" action="{{ url('/student/' . $item->id) }}" accept-charset="UTF-8" style="display:inline">
+                                            {{ method_field('DELETE') }}0
                                             {{ csrf_field() }}
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete Student" onclick="return confirm(&quot;Confirm delete?&quot;)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Delete Student" onclick="return confirm(&quot;Confirm delete?&quot;)">
+                                                <i class="fa fa-trash-o" aria-hidden="true">
+                                                    </i> Delete</button>
                                         </form>
                                     </td>
                                 </tr>

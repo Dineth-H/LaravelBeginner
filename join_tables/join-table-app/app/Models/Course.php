@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
 
-class Course 
+class Course
 {
     protected $fillable = [
         'course_name',
@@ -19,7 +19,7 @@ class Course
             ->select('students.*')
             ->get();
     }
-    
+
     public function get_all_course_data()
     {
         return DB::table('courses')

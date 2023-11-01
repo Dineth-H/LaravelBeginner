@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -43,7 +44,11 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        $course = DB::table('courses')->where('id', $id)->first();
+        $course = DB::table('courses')
+            ->where(
+                'id',
+                $id
+            )->first();
         return view('courses.show', compact('course'));
     }
     /**
@@ -52,9 +57,6 @@ class CourseController extends Controller
     public function edit($id)
     {
         $course = DB::table('courses')->where('id', $id)->first();
-        if (!$course) {
-            return redirect()->route('courses.index')->with('error', 'Course not found');
-        }
         return view('courses.edit', compact('course'));
     }
     /**
@@ -69,7 +71,7 @@ class CourseController extends Controller
         ];
 
         DB::table('courses')->where('id', $id)->update($data);
-        return redirect()->action([CourseController::class,'index']);
+        return redirect()->action([CourseController::class, 'index']);
     }
     /**
      * Remove the specified resource from storage.
@@ -81,6 +83,7 @@ class CourseController extends Controller
             return redirect()->action([CourseController::class, 'index']);
         }
         DB::table('courses')->where('id', $id)->delete();
-        return view('courses.index', compact('course'));
+        $courses = DB::table('courses')->get();
+        return view('courses.index', compact('courses'));
     }
 }

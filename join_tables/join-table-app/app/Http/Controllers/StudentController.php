@@ -21,14 +21,15 @@ class StudentController extends Controller
     public function index()
     {
         $data = $this->student->course();
+        // return $data;
         return view('students.index', compact('data'));
     }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    { $data = $this->course->get_all_course_data();
-    
+    {
+        $data = $this->course->get_all_course_data();
         return view('students.create', ['data' => $data]);
     }
     /**
@@ -44,8 +45,9 @@ class StudentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->action([StudentController::class, 'create'])
-                ->withErrors($validator);
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
         $data = [
@@ -64,14 +66,18 @@ class StudentController extends Controller
     public function show(string $id)
     {
         $student = DB::table('students')
-        ->where('students.id', $id) // Specify the table name for 'id'
-            ->join('courses', 'courses.id', '=', 'students.course_id')
-            ->select('students.*', 'courses.*')
+            ->where('students.id', $id)
             ->first();
 
         if (!$student) {
             return redirect()->action([StudentController::class, 'create']);
         }
+
+        $course = DB::table('courses')
+            ->where('id', $student->course_id)
+            ->first();
+
+        $student->course = $course;
 
         return view('students.show', compact('student'));
     }
@@ -81,8 +87,10 @@ class StudentController extends Controller
      */
     public function edit(string $id)
     {
+        $data = $this->course->get_all_course_data();
+
         $student = DB::table('students')->where('id', $id)->first();
-        return view('students.edit', compact('student'));
+        return view('students.edit', ['data' => $data], compact('student'));
     }
     /**
      * Update the specified resource in storage.
